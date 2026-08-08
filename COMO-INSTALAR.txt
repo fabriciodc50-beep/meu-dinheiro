@@ -1,63 +1,118 @@
-MEU DINHEIRO — COMO INSTALAR NO CELULAR COM ÍCONE
-==================================================
+MEU DINHEIRO 2.2 — CONTROLE FINANCEIRO COMPLETO
+================================================
 
-O QUE TEM NESTE PACOTE
-- index.html ......... o app
-- manifest.json ...... faz o celular reconhecer como app instalável
-- sw.js .............. faz funcionar sem internet depois de instalado
-- icon-*.png ......... ícones do app
-
-IMPORTANTE: para instalar com ícone, os arquivos precisam estar
-publicados num endereço da internet com https. Um arquivo solto
-no celular NÃO instala. Abaixo o jeito mais fácil e gratuito.
-
-
-OPÇÃO 1 — NETLIFY DROP (mais fácil, ~2 minutos, grátis)
---------------------------------------------------------
-1. No computador, acesse:  https://app.netlify.com/drop
-2. Arraste a PASTA inteira (descompactada) para a área indicada.
-   Atenção: arraste a pasta com todos os arquivos juntos.
-3. Ele gera um endereço, algo como:
-   https://nome-aleatorio.netlify.app
-4. Abra esse endereço NO CELULAR.
-5. Instale:
-   - ANDROID (Chrome): toque nos 3 pontinhos > "Instalar app"
-     (ou aparecerá o botão verde "Instalar app" na tela)
-   - iPHONE (Safari): toque em Compartilhar > "Adicionar à Tela de Início"
-6. Pronto: o ícone aparece na tela do celular e abre em tela cheia,
-   sem barra de navegador.
-
-Dica: crie uma conta grátis no Netlify para o endereço não expirar
-e para poder trocar o nome do site depois.
-
-
-OPÇÃO 2 — GITHUB PAGES (grátis, permanente)
---------------------------------------------
-1. Crie conta em github.com
-2. Crie um repositório novo, marque "Public"
-3. Envie todos os arquivos deste pacote para o repositório
-4. Vá em Settings > Pages > em "Branch" escolha "main" e salve
-5. Aguarde 1-2 minutos; ele mostra o endereço do site
-6. Abra no celular e instale como descrito acima
-
-
-ONDE OS DADOS FICAM GUARDADOS
+INSTALAR NO CELULAR COM ÍCONE
 ------------------------------
-Os lançamentos ficam salvos no próprio celular, no armazenamento
-do navegador. Funcionam sem internet.
+1. Descompacte esta pasta no computador.
+2. Acesse https://app.netlify.com/drop
+3. Arraste a PASTA INTEIRA para a área indicada.
+4. Ele gera um endereço (ex: https://algo.netlify.app)
+5. Abra esse endereço NO CELULAR e instale:
+   - ANDROID/Chrome: botão "Instalar app" (ou 3 pontinhos > Instalar app)
+   - iPHONE/Safari: Compartilhar > "Adicionar à Tela de Início"
 
-ATENÇÃO: se você limpar os dados do navegador ou desinstalar o app,
-os lançamentos somem. Por isso, use regularmente:
-   Menu (☰) > Backup > "Baixar backup"
-Guarde esse arquivo. Para recuperar: Backup > "Restaurar de um backup".
+=================================================
+COMO O DINHEIRO FUNCIONA NESTE APP
+=================================================
+CARTEIRAS: cadastre onde seu dinheiro está (banco, conta digital,
+dinheiro em espécie). Cada uma tem saldo próprio.
+Ao lançar, você escolhe ONDE ENTROU ou DE ONDE SAIU.
 
-Se quiser usar no celular E no computador com os mesmos dados,
-use o backup para transferir (baixa num, restaura no outro).
+SITUAÇÃO: cada lançamento é "já paguei/recebi" ou "ainda vou".
+O pendente NÃO mexe no saldo até você tocar em "Paguei"/"Recebi".
+Assim o saldo mostra o dinheiro que você REALMENTE tem.
 
+PREVISTO: na tela inicial — saldo de hoje, a receber, a pagar,
+e quanto vai sobrar no fim.
 
-ATUALIZANDO O APP DEPOIS
--------------------------
-Se receber uma versão nova do index.html, basta reenviar os arquivos
-para o mesmo lugar (Netlify/GitHub). O app atualiza sozinho na
-próxima vez que abrir. Seus dados não se perdem.
-Se não atualizar, feche e abra o app duas vezes.
+CARTÃO DE CRÉDITO: compra no crédito não tira dinheiro na hora.
+Vai para a fatura do ciclo certo (respeita o dia de fechamento).
+Ao pagar a fatura, escolha de qual carteira sai.
+
+TRANSFERÊNCIA: mover entre carteiras sem contar como ganho/gasto.
+
+=================================================
+NOVIDADES DA VERSÃO 2.2
+=================================================
+A RECEBER DE CLIENTES (menu ☰)
+  Tela só de cobranças em aberto: vencidas, a vencer e saldos de
+  sinal (cliente pagou entrada e falta o resto). Botão "Recebi"
+  em cada uma.
+
+AGENDA DE VENCIMENTOS (menu ☰)
+  Calendário do mês com marcação nos dias que têm conta.
+  Toque num dia para ver o que vence. Inclui vencimento de faturas.
+
+EXPORTAR PARA O CALENDÁRIO
+  Botão que gera arquivo .ics — abre no Google Calendar, Apple
+  Calendário ou Outlook e cria um evento por conta, com LEMBRETE
+  1 DIA ANTES. Também há botão em cada lançamento individual.
+  (Sincronização automática não é possível sem servidor; este é
+   o caminho que funciona em qualquer celular.)
+
+NOTIFICAÇÕES
+  Configurações > Avisos > Ativar. O app avisa sobre contas
+  vencendo e atrasadas.
+  IMPORTANTE: no Android funciona bem; no iPhone a Apple limita
+  muito esse recurso em apps instalados pela web — lá o mais
+  confiável é usar a exportação para o calendário.
+
+COMPROVANTE EM FOTO
+  Ao lançar, anexe a foto do comprovante ou nota. A imagem é
+  reduzida automaticamente. Itens com foto mostram um ícone de
+  câmera — toque para ver ampliada.
+
+BUSCAR POR PERÍODO (menu ☰ > Relatórios)
+  Escolha datas, conta, categoria e tipo. Mostra totais, saldo e
+  média por mês. Exporta o resultado em CSV.
+
+EXPORTAR E IMPRIMIR (menu ☰ > Relatórios)
+  - CSV do mês, do ano ou de todo o histórico (abre no Excel)
+  - Relatório para impressão/PDF, com resumo, gastos por categoria
+    e lista de lançamentos. Escolha "Salvar como PDF" na impressão.
+
+FECHAR O MÊS
+  Botão na tela inicial. Mostra o resultado do mês e oferece passar
+  os lançamentos pendentes para o mês seguinte.
+
+=================================================
+DEMAIS RECURSOS
+=================================================
+- Contas separadas (Pessoal, Casa, Empresa), cada uma com suas
+  próprias categorias de recebimento e de gasto
+- Categorias e subcategorias completas, todas editáveis
+- Tipos de sessão fotográfica + controle de sinal e saldo do cliente
+- Campo "Pago por" com resumo de quanto cada pessoa pagou
+- Parcelamento automático e contas que se repetem todo mês
+- Copiar despesas do mês anterior
+- Gráficos: categoria, subcategoria, carteira, pessoa, sazonalidade
+- Resumo do ano com médias
+- Metas, cofrinho, lista de desejos, mural dos sonhos
+- Equipamentos e investimentos
+- Limites de gasto por categoria com aviso de estouro
+- Modo claro/escuro, tamanho de letra, ocultar valores
+- Backup e restauração
+
+VERSÃO E ATUALIZAÇÕES
+----------------------
+A versão aparece no rodapé de toda tela.
+Havendo versão nova publicada, aparece a barra "Nova versão
+disponível" com o botão "Atualizar agora".
+Conferir em: Configurações > Sobre o app.
+
+Ao publicar atualização, mude o número em DOIS arquivos:
+  index.html -> const APP_VERSION='2.2.0';
+  sw.js      -> const APP_VERSION = '2.2.0';
+
+BACKUP — IMPORTANTE
+-------------------
+Os dados ficam neste aparelho. Se limpar os dados do navegador ou
+trocar de celular, eles somem.
+Use: Menu ☰ > Backup > "Baixar backup".
+Para restaurar ou levar a outro aparelho: "Restaurar de um backup".
+
+ARQUIVO exemplo.html
+--------------------
+Vem preenchido com dados fictícios de um estúdio (Lumiar Retratos)
+para ver tudo funcionando. Usa armazenamento separado, não mistura
+com seus dados reais. Pode apagar se não quiser.

@@ -786,7 +786,7 @@ const now=new Date();
 let cM=now.getMonth(),cY=now.getFullYear();
 const realM=now.getMonth(),realY=now.getFullYear(),realD=now.getDate();
 
-const KEY='mdo:v2';
+const KEY='mdo:v22-exemplo';
 const money=n=>'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const moneyS=n=>'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -822,8 +822,102 @@ async function load(){
   if(!S.accounts)S.accounts=DEF_ACCOUNTS.map(a=>({...a}));
   if(!S.cattree)S.cattree=DEF_CATTREE.map(c=>({...c,subs:c.subs.slice()}));
   if(!S.settings)S.settings={theme:'dark',fs:1,appName:'Meu Dinheiro',hideBal:false};
+  if(S.entries.length===0){seedData();persist();}
   paintStaticIcons();applySettings();buildMenu();buildScopeBar();render();
-  setTimeout(checkDueNotifications,1500);
+}
+function monthsBack(n){let m=cM-n,y=cY;while(m<0){m+=12;y--}return{m,y}}
+function seedData(){
+  S.wallets=[{id:'wbb',name:'Banco do Brasil',type:'corrente',opening:3200,color:'#4a90e2'},
+             {id:'wnu',name:'Nubank',type:'digital',opening:1450,color:'#9b8cf0'},
+             {id:'wca',name:'Dinheiro',type:'dinheiro',opening:280,color:'#3ecf8e'}];
+  S.cards=[{id:'cnu',name:'Nubank',limit:6000,close:3,due:10,color:'#6a4de0',payWallet:'wnu'},
+           {id:'cbb',name:'Ourocard BB',limit:3000,close:20,due:27,color:'#1e40af',payWallet:'wbb'}];
+  const D=[
+   {emp_in:[['Ensaio Gestante — Renata Souza','Gestante',1600,1600,14,'wbb','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1150,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu']],
+    emp_var:[['Álbuns — Gráfica Prisma','Produção','Álbuns',280,16,'cnu']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Luz','Contas da casa','Luz',180,12,'wbb','Cônjuge']],
+    casa_var:[['Supermercado','Mercado','Supermercado',620,9,'cnu','Cônjuge']],
+    pes_var:[['Almoço fora','Alimentação','Restaurante',210,15,'wca','Eu']]},
+   {emp_in:[['Ensaio Gestante — Patrícia Lima','Gestante',1700,1700,11,'wbb','Estúdio'],['Família — Costa','Família',900,900,25,'wnu','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1150,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu']],
+    emp_var:[['Impressões','Produção','Impressões',230,14,'cnu']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Luz','Contas da casa','Luz',195,12,'wbb','Cônjuge']],
+    casa_var:[['Supermercado','Mercado','Supermercado',580,9,'cnu','Cônjuge']],
+    pes_var:[['Streaming','Lazer','Streaming',55,20,'cnu','Eu'],['Farmácia','Saúde','Farmácia',130,17,'wca','Eu']]},
+   {emp_in:[['Newborn — Marina Alves','Newborn',1400,1400,8,'wbb','Estúdio'],['Corporativo — OdontoVida','Corporativo',2000,2000,19,'wbb','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1150,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],['Contador','Administrativo','Contador',180,15,'wbb']],
+    emp_var:[['Revisão da câmera','Equipamento','Manutenção',300,5,'cbb']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Internet','Contas da casa','Internet',120,15,'wbb','Eu']],
+    casa_var:[['Supermercado','Mercado','Supermercado',610,9,'cnu','Cônjuge']],
+    pes_var:[['Uber','Transporte','App de transporte',180,12,'cnu','Eu']]},
+   {emp_in:[['Ensaio Gestante — Juliana Prado','Gestante',1800,1800,13,'wbb','Estúdio'],['Debutante — Ana Beatriz','Debutante',2500,1200,24,'wnu','Estúdio','pagar']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1180,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],['DAS mensal','Impostos','DAS mensal',76,20,'wbb']],
+    emp_var:[['Anúncios Instagram','Marketing','Anúncios',120,3,'cnu']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Água','Contas da casa','Água',85,10,'wbb','Cônjuge']],
+    casa_var:[['Supermercado','Mercado','Supermercado',590,9,'cnu','Cônjuge'],['Feira','Mercado','Feira',140,7,'wca','Cônjuge']],
+    pes_var:[['Academia','Saúde','Academia',110,5,'cnu','Eu']]},
+   {emp_in:[['Pré-wedding — Larissa & João','Casamento',3400,1500,18,'wbb','Estúdio','pagar'],['Gestante — Camila Freitas','Gestante',1750,1750,9,'wbb','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1180,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],['DAS mensal','Impostos','DAS mensal',76,20,'wbb']],
+    emp_var:[['Revisão lente 85mm','Equipamento','Manutenção',400,12,'cbb'],['Assistente de set','Produção','Assistente de set',250,18,'wca']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Luz','Contas da casa','Luz',210,12,'wbb','Cônjuge']],
+    casa_var:[['Supermercado','Mercado','Supermercado',640,9,'cnu','Cônjuge']],
+    pes_var:[['Roupas','Cuidados pessoais','Roupas',320,14,'cnu','Eu']]},
+   {emp_in:[['Casamento — Beatriz & Rafael','Casamento',3600,1800,20,'wbb','Estúdio','pagar'],['Família — Andrade','Família',950,950,27,'wnu','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1180,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],['DAS mensal','Impostos','DAS mensal',76,20,'wbb']],
+    emp_var:[['Frete dos álbuns','Produção','Frete de entrega',95,18,'wca'],['Social media','Marketing','Social media',400,5,'cnu']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Condomínio','Moradia','Condomínio',320,5,'wbb','Eu']],
+    casa_var:[['Supermercado','Mercado','Supermercado',600,9,'cnu','Cônjuge']],
+    pes_var:[['Curso de fotografia','Educação','Cursos',290,10,'cnu','Eu']]},
+   {emp_in:[['Gestante — Fernanda Dias','Gestante',1900,1900,15,'wbb','Estúdio'],['Produto — Loja Bela Flor','Produto',700,700,6,'wnu','Estúdio']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1200,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],['DAS mensal','Impostos','DAS mensal',76,20,'wbb']],
+    emp_var:[['Molduras','Produção','Molduras',340,14,'cbb']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Condomínio','Moradia','Condomínio',320,5,'wbb','Eu'],['Gás','Contas da casa','Gás',95,14,'wca','Cônjuge']],
+    casa_var:[['Supermercado','Mercado','Supermercado',630,9,'cnu','Cônjuge']],
+    pes_var:[['Barbeiro','Cuidados pessoais','Cabelo',80,16,'wca','Eu']]},
+   {emp_in:[['Gestante — Camila Rocha','Gestante',1800,900,12,'wbb','Estúdio'],['Corporativo — Nexo Contabilidade','Corporativo',2200,2200,5,'wbb','Estúdio'],
+            ['Pré-wedding — Beatriz & Rafael','Casamento',3200,1000,20,'wnu','Estúdio','pagar']],
+    emp_fix:[['Aluguel do estúdio','Estúdio','Aluguel',1200,6,'wbb'],['Adobe','Software','Adobe',89,10,'cnu'],
+             ['Internet do estúdio','Estúdio','Internet',150,15,'wbb',null,'pagar'],['DAS mensal','Impostos','DAS mensal',76,20,'wbb',null,'pagar'],
+             ['Contador','Administrativo','Contador',180,15,'wbb']],
+    emp_var:[['Álbuns — Gráfica Prisma','Produção','Álbuns',480,14,'cnu'],['Manutenção lente','Equipamento','Manutenção',250,8,'cbb'],
+             ['Anúncios Instagram','Marketing','Anúncios',150,3,'cnu'],['Maquiadora','Equipe','Maquiadora',200,12,'wca']],
+    casa_fix:[['Aluguel de casa','Moradia','Aluguel',1400,5,'wbb','Eu'],['Luz','Contas da casa','Luz',225,12,'wbb','Cônjuge','pagar'],
+              ['Condomínio','Moradia','Condomínio',320,5,'wbb','Eu']],
+    casa_var:[['Supermercado','Mercado','Supermercado',660,9,'cnu','Cônjuge'],['Feira','Mercado','Feira',140,7,'wca','Cônjuge'],
+              ['Conserto da geladeira','Manutenção','Eletrodomésticos',280,11,'cbb','Eu','pagar']],
+    pes_var:[['Almoço fora','Alimentação','Restaurante',240,15,'wca','Eu'],['Combustível','Transporte','Combustível',310,8,'cnu','Eu']],
+    pes_div:[['Parcela do notebook','Compromissos financeiros','Empréstimo',210,18,'wbb','Eu','pagar']]},
+  ];
+  const addIn=(r,sc,m,y)=>{const[desc,session,val,sinal,day,wallet,payer,status]=r;
+    S.entries.push({id:uid(),type:'in',desc,val,cat:'',sub:'',detail:'',session:session||'',sinal:sinal!=null?sinal:null,
+      scope:sc,wallet:wallet||'',payer:payer||'',day,status:status||'paga',month:m,year:y})};
+  const addOut=(tp,r,sc,m,y)=>{const[desc,cat,sub,val,day,wallet,payer,status]=r;
+    const e={id:uid(),type:tp,desc,val,cat:cat||'',sub:sub||'',detail:'',session:'',
+      scope:sc,wallet:wallet||'',payer:payer||'',day,status:status||'paga',month:m,year:y};
+    applyBillCycle(e);S.entries.push(e)};
+  D.forEach((md,idx)=>{
+    const{m,y}=monthsBack(7-idx);
+    (md.emp_in||[]).forEach(r=>addIn(r,'empresa',m,y));
+    addIn(['Pró-labore','',4000,null,1,'wbb','Eu'],'pessoal',m,y);
+    addIn(['Parte do cônjuge na casa','',1800,null,5,'wbb','Cônjuge'],'casa',m,y);
+    (md.emp_fix||[]).forEach(r=>addOut('fix',r,'empresa',m,y));
+    (md.emp_var||[]).forEach(r=>addOut('var',r,'empresa',m,y));
+    (md.casa_fix||[]).forEach(r=>addOut('fix',r,'casa',m,y));
+    (md.casa_var||[]).forEach(r=>addOut('var',r,'casa',m,y));
+    (md.pes_var||[]).forEach(r=>addOut('var',r,'pessoal',m,y));
+    (md.pes_div||[]).forEach(r=>addOut('div',r,'pessoal',m,y));
+  });
+  S.invs=[{id:uid(),name:'Tesouro Selic',broker:'Nubank',type:'Renda fixa',val:8000},{id:uid(),name:'CDB 110% CDI',broker:'PagBank',type:'Renda fixa',val:3500}];
+  S.equip=[{id:uid(),name:'Câmera Sony A7 III',val:9800,date:'Mar/2026',note:'Revisão anual feita'},
+           {id:uid(),name:'Lente 85mm f/1.8',val:2400,date:'Jan/2026',note:'Principal em retratos'},
+           {id:uid(),name:'Lente 24-70mm f/2.8',val:5200,date:'—',note:'Zoom para eventos'},
+           {id:uid(),name:'Kit de flash',val:3100,date:'Fev/2026',note:'2 pontos + softbox'}];
+  S.goals=[{id:uid(),name:'Reserva de emergência',target:15000,saved:6200,emo:'🛟'},{id:uid(),name:'Lente 35mm nova',target:4200,saved:1500,emo:'📷'}];
+  S.cats=[{id:uid(),name:'Mercado',limit:800,emo:'🛒'},{id:uid(),name:'Produção',limit:900,emo:'🖼️'},{id:uid(),name:'Marketing',limit:400,emo:'📣'},{id:uid(),name:'Moradia',limit:2000,emo:'🏠'}];
+  S.wish=[{id:uid(),name:'Backdrop de fundo infinito',price:890,q:{need:true,fit:false,wait:true}},{id:uid(),name:'Iluminador LED',price:540,q:{need:false,fit:false,wait:false}}];
+  S.dreams=[{id:uid(),name:'Estúdio próprio maior',emo:'🏠',val:0},{id:uid(),name:'Curso internacional',emo:'✈️',val:12000},{id:uid(),name:'Equipe fixa',emo:'🤝',val:0}];
+  S.settings.appName='Lumiar Retratos';
 }
 function persist(){
   try{localStorage.setItem(KEY,JSON.stringify(S));return true}
