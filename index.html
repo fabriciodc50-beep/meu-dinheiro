@@ -2,8 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Meu Dinheiro</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1115">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meu Dinheiro">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 :root{
   --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#272c37; --line2:#333a48;
@@ -439,24 +446,17 @@ const MENU=[
 const MENU_FLAT=MENU.flatMap(g=>g.items);
 
 async function load(){
-  try{const r=await window.storage.get(KEY,false);if(r&&r.value)S=Object.assign(S,JSON.parse(r.value));}catch(e){}
+  try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
   ['entries','recs','invs','equip','goals','cards','cats','wish','dreams'].forEach(k=>{if(!S[k])S[k]=[]});
   if(!S.sessions)S.sessions=DEF_SESSIONS.slice();
   if(!S.accounts)S.accounts=DEF_ACCOUNTS.map(a=>({...a}));
-  if(!S.cattree){
-    S.cattree=DEF_CATTREE.map(c=>({...c,subs:c.subs.slice()}));
-    if(S.expcats&&S.expcats.length){
-      S.expcats.forEach(n=>{if(!S.cattree.some(c=>c.name.toLowerCase()===String(n).toLowerCase()))S.cattree.push({id:uid(),name:n,subs:[]})});
-    }
-  }
+  if(!S.cattree)S.cattree=DEF_CATTREE.map(c=>({...c,subs:c.subs.slice()}));
   if(!S.settings)S.settings={theme:'dark',fs:1,appName:'Meu Dinheiro'};
   applySettings();buildMenu();buildScopeBar();buildChips();render();
 }
 async function persist(){
-  for(let a=0;a<3;a++){
-    try{const r=await window.storage.set(KEY,JSON.stringify(S),false);if(r)return r;}catch(e){}
-    await new Promise(res=>setTimeout(res,300));
-  }
+  try{localStorage.setItem(KEY,JSON.stringify(S));return true}
+  catch(e){console.error('Falha ao salvar',e);alert('Não foi possível salvar. O armazenamento do navegador pode estar cheio ou bloqueado.');return false}
 }
 function applySettings(){
   document.body.classList.toggle('light',S.settings.theme==='light');
@@ -1121,6 +1121,22 @@ async function saveDream(){const name=document.getElementById('d-name').value.tr
 async function delDream(id){if(!confirm('Excluir?'))return;S.dreams=S.dreams.filter(d=>d.id!==id);await persist();render()}
 
 if(document.readyState==='complete')load();else window.addEventListener('load',load);
+
+/* PWA: service worker + botão instalar */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.log('SW',e)));
+}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;showInstallBtn()});
+function showInstallBtn(){
+  if(document.getElementById('installBtn'))return;
+  const b=document.createElement('button');
+  b.id='installBtn';b.textContent='📲 Instalar app';
+  b.style.cssText='position:fixed;top:auto;bottom:96px;left:50%;transform:translateX(-50%);z-index:50;background:var(--green);color:#07160e;border:none;padding:12px 22px;border-radius:24px;font-size:14px;font-weight:700;box-shadow:0 6px 20px rgba(62,207,142,.4);cursor:pointer';
+  b.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;b.remove()};
+  document.body.appendChild(b);
+}
+window.addEventListener('appinstalled',()=>{const b=document.getElementById('installBtn');if(b)b.remove()});
 </script>
 </body>
 </html>

@@ -1,0 +1,63 @@
+MEU DINHEIRO — COMO INSTALAR NO CELULAR COM ÍCONE
+==================================================
+
+O QUE TEM NESTE PACOTE
+- index.html ......... o app
+- manifest.json ...... faz o celular reconhecer como app instalável
+- sw.js .............. faz funcionar sem internet depois de instalado
+- icon-*.png ......... ícones do app
+
+IMPORTANTE: para instalar com ícone, os arquivos precisam estar
+publicados num endereço da internet com https. Um arquivo solto
+no celular NÃO instala. Abaixo o jeito mais fácil e gratuito.
+
+
+OPÇÃO 1 — NETLIFY DROP (mais fácil, ~2 minutos, grátis)
+--------------------------------------------------------
+1. No computador, acesse:  https://app.netlify.com/drop
+2. Arraste a PASTA inteira (descompactada) para a área indicada.
+   Atenção: arraste a pasta com todos os arquivos juntos.
+3. Ele gera um endereço, algo como:
+   https://nome-aleatorio.netlify.app
+4. Abra esse endereço NO CELULAR.
+5. Instale:
+   - ANDROID (Chrome): toque nos 3 pontinhos > "Instalar app"
+     (ou aparecerá o botão verde "Instalar app" na tela)
+   - iPHONE (Safari): toque em Compartilhar > "Adicionar à Tela de Início"
+6. Pronto: o ícone aparece na tela do celular e abre em tela cheia,
+   sem barra de navegador.
+
+Dica: crie uma conta grátis no Netlify para o endereço não expirar
+e para poder trocar o nome do site depois.
+
+
+OPÇÃO 2 — GITHUB PAGES (grátis, permanente)
+--------------------------------------------
+1. Crie conta em github.com
+2. Crie um repositório novo, marque "Public"
+3. Envie todos os arquivos deste pacote para o repositório
+4. Vá em Settings > Pages > em "Branch" escolha "main" e salve
+5. Aguarde 1-2 minutos; ele mostra o endereço do site
+6. Abra no celular e instale como descrito acima
+
+
+ONDE OS DADOS FICAM GUARDADOS
+------------------------------
+Os lançamentos ficam salvos no próprio celular, no armazenamento
+do navegador. Funcionam sem internet.
+
+ATENÇÃO: se você limpar os dados do navegador ou desinstalar o app,
+os lançamentos somem. Por isso, use regularmente:
+   Menu (☰) > Backup > "Baixar backup"
+Guarde esse arquivo. Para recuperar: Backup > "Restaurar de um backup".
+
+Se quiser usar no celular E no computador com os mesmos dados,
+use o backup para transferir (baixa num, restaura no outro).
+
+
+ATUALIZANDO O APP DEPOIS
+-------------------------
+Se receber uma versão nova do index.html, basta reenviar os arquivos
+para o mesmo lugar (Netlify/GitHub). O app atualiza sozinho na
+próxima vez que abrir. Seus dados não se perdem.
+Se não atualizar, feche e abra o app duas vezes.
